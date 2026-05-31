@@ -92,25 +92,54 @@ Once the developer pastes the Canonical Execution Prompt back to you verbatim wi
 
 ## FILE SYSTEM ARCHITECTURE
 
-All generated artifacts are saved and organized as follows.
-
 ### Conversation Numbering
 - Conversations are four-digit zero-padded integers starting at `0000`.
 - Within each conversation:
-  - User inputs: `0000.0.0`, `0000.1.0`, `0000.2.0` ...
-  - System responses: `0000.0.5`, `0000.1.5`, `0000.2.5` ...
-  - Pairs are: `[0000.0.0, 0000.0.5]`, `[0000.1.0, 0000.1.5]`, etc.
+  - User inputs: `XXXX.N.0`
+  - System responses: `XXXX.N.5`
+  - Pairs are: `[XXXX.0.0, XXXX.0.5]`, `[XXXX.1.0, XXXX.1.5]`, etc.
 
-### Folder Structure
+### Live Conversation Log
+Every conversation folder contains one primary **running log file**:
+```
+conversations/XXXX/XXXX_conversation.md
+```
+- This file is **append-only**. It is never overwritten.
+- It **auto-appends every 20 seconds** via a client-side flush interval.
+- Each turn is stamped with: turn ID, role (USER / SYSTEM), ISO 8601 UTC timestamp, current state, prompt family (system only), pass number (system only).
+- In-progress turns are buffered in memory; only finalized turns are written.
+- On page unload, a **force flush** triggers immediately.
+- Individual turn files are still saved separately in `turns/` for granular access.
+
+### Turn entry format inside `XXXX_conversation.md`
+```md
+---
+## [XXXX.N.0] USER — 2026-05-31T02:03:00Z
+<!-- state: prompt_draft_returned -->
+
+{full input text}
+
+---
+## [XXXX.N.5] SYSTEM — 2026-05-31T02:03:14Z
+<!-- state: critique_received -->
+<!-- prompt_family: product_spec -->
+<!-- pass: 2 -->
+
+{full response text}
+```
+
+### Folder structure
 
 ```
 prompt-refinery/
 ├── conversations/
 │   └── 0000/
-│       ├── 0000.0.0_input.md
-│       ├── 0000.0.5_response.md
-│       ├── 0000.1.0_input.md
-│       ├── 0000.1.5_response.md
+│       ├── 0000_conversation.md        ← live running log, appended every 20s
+│       ├── turns/
+│       │   ├── 0000.0.0_input.md
+│       │   ├── 0000.0.5_response.md
+│       │   ├── 0000.1.0_input.md
+│       │   └── 0000.1.5_response.md
 │       ├── clarifications/
 │       │   ├── 0000.0.5_questions.md
 │       │   └── 0000.1.0_answers.md
@@ -126,24 +155,15 @@ prompt-refinery/
 │           └── 0000.2.5_canonical_attempt.md
 │
 ├── prompt_library/
-│   ├── analysis/
-│   │   └── template_v1.md
-│   ├── product_spec/
-│   │   └── template_v1.md
-│   ├── research_brief/
-│   │   └── template_v1.md
-│   ├── execution_plan/
-│   │   └── template_v1.md
-│   ├── writing_content/
-│   │   └── template_v1.md
-│   ├── outreach_persuasion/
-│   │   └── template_v1.md
-│   ├── debugging_troubleshooting/
-│   │   └── template_v1.md
-│   ├── critique_loop/
-│   │   └── template_v1.md
-│   └── circumstantial/
-│       └── template_v1.md
+│   ├── analysis/template_v1.md
+│   ├── product_spec/template_v1.md
+│   ├── research_brief/template_v1.md
+│   ├── execution_plan/template_v1.md
+│   ├── writing_content/template_v1.md
+│   ├── outreach_persuasion/template_v1.md
+│   ├── debugging_troubleshooting/template_v1.md
+│   ├── critique_loop/template_v1.md
+│   └── circumstantial/template_v1.md
 │
 ├── critique_templates/
 │   └── 0000/
@@ -158,18 +178,63 @@ prompt-refinery/
 ├── session_log/
 │   └── 0000_session.md
 │
-├── CODEX_PROMPT.md      ← this file
+├── CODEX_PROMPT.md
 ├── SPEC.md
 └── README.md
 ```
 
 ### File behavior rules
-- Critique templates are **appended** per conversation pass, not overwritten.
-- Clarification Q&A pairs are **grouped by conversation** inside `clarification_templates/{conv_number}/`.
+- `XXXX_conversation.md` is the **source of truth for the full conversation** — append only, auto-flushed every 20s.
+- Individual `turns/` files are granular snapshots — still written per turn.
+- Critique templates are **appended** per pass, not overwritten.
+- Clarification Q&A pairs are grouped by conversation.
 - Prompt library templates are **outside all conversation folders** — shared global assets.
-- Templates AI generates are **copied to prompt_library** by family, AND stored in the conversation folder.
-- Next-step prompts are filed under `chosen/` or `ignored/` based on whether the user followed them.
-- Circumstantial prompts are filed in conversation AND sent as a copy to `prompt_library/circumstantial/`.
+- Templates AI generates are **copied to prompt_library** by family AND stored in conversation folder.
+- Next-step prompts are filed under `chosen/` or `ignored/`.
+- Circumstantial prompts live in conversation AND `prompt_library/circumstantial/`.
+
+### Auto-update implementation spec
+
+```ts
+// File writer service — pseudocode
+
+const FLUSH_INTERVAL_MS = 20_000;
+const pendingTurns: Turn[] = [];
+
+function enqueueTurn(turn: Turn) {
+  // Called when a turn is finalized in the state machine
+  pendingTurns.push(turn);
+}
+
+setInterval(async () => {
+  if (pendingTurns.length === 0) return;
+  const batch = pendingTurns.splice(0, pendingTurns.length);
+  const appendBlock = batch.map(formatTurnBlock).join('\n');
+  await appendToFile(
+    `conversations/${convId}/${convId}_conversation.md`,
+    appendBlock
+  );
+}, FLUSH_INTERVAL_MS);
+
+// Force flush on tab close / page unload
+window.addEventListener('beforeunload', () => flushNow());
+
+function formatTurnBlock(turn: Turn): string {
+  const role = turn.role === 'user' ? 'USER' : 'SYSTEM';
+  const meta = turn.role === 'system'
+    ? `<!-- prompt_family: ${turn.promptFamily} -->\n<!-- pass: ${turn.pass} -->`
+    : '';
+  return [
+    '---',
+    `## [${turn.id}] ${role} — ${turn.timestamp}`,
+    `<!-- state: ${turn.state} -->`,
+    meta,
+    '',
+    turn.content,
+    ''
+  ].filter(Boolean).join('\n');
+}
+```
 
 ---
 
@@ -185,16 +250,10 @@ prompt-refinery/
 - When all questions answered, questionnaire disappears and prompt workspace updates.
 
 ### Visual Workspace (secondary feature)
-- An interactive flow canvas shows:
-  - Refinement pass history.
-  - Question branches (what was asked, what was answered).
-  - Prompt version lineage.
-  - Stage transitions.
-  - Unresolved question nodes.
-- Optional: drag-and-drop grouping of ideas into clusters, Venn-style overlap zones.
-- AI can surface visual prompts like "these two areas seem related — drag them closer to confirm."
-- Optional: an AI-assisted 'help me understand' workspace where unresolved ambiguities appear as floating nodes that the user resolves by spatial arrangement.
-- Mind map view is a secondary screen — the main UI is the prompt pipeline workspace.
+- An interactive flow canvas shows refinement pass history, question branches, prompt version lineage, stage transitions, and unresolved question nodes.
+- Optional drag-and-drop grouping, Venn-style overlap zones.
+- AI-assisted 'help me understand' nodes for unresolved ambiguities.
+- Mind map view is secondary — main UI is the prompt pipeline workspace.
 
 ### Main Workspace Panels
 - Left: Input panel + conversation history.
@@ -204,22 +263,16 @@ prompt-refinery/
 - Floating: Suggested next prompt chip at top right.
 
 ### Stage Status Display
-- A persistent stage indicator shows which state the session is in:
-  `intake_received → classified → clarification_needed → prompt_draft_returned → critique_received → prompt_revised → ready_for_acceptance → accepted_verbatim → execution_pipeline_started`
+```
+intake_received → classified → clarification_needed → prompt_draft_returned
+→ critique_received → prompt_revised → ready_for_acceptance
+→ accepted_verbatim → execution_pipeline_started
+```
 
 ---
 
 ## PROMPT FAMILY TAXONOMY
 
-Each family has:
-- Purpose
-- Required context fields
-- Preferred output structure
-- Default clarification questions
-- Critique dimensions
-- Canonical template v1
-
-Families:
 1. `analysis` — break down existing material
 2. `product_spec` — define product, MVP, architecture
 3. `research_brief` — structured research question
@@ -234,15 +287,12 @@ Families:
 
 ## ACCEPTANCE HANDSHAKE RULES
 
-The system must enforce all three conditions simultaneously:
 1. No unresolved questions from the system.
 2. No critique input from the user.
 3. User input is an exact verbatim match of the last Canonical Execution Prompt.
 
-If all three are met → transition to `accepted_verbatim` state.
-If any are not met → remain in current loop stage.
-
-The system must never self-advance the stage. The user's verbatim paste is the only valid trigger.
+If all three are met → `accepted_verbatim`.
+System must never self-advance the stage.
 
 ---
 
@@ -250,46 +300,43 @@ The system must never self-advance the stage. The user's verbatim paste is the o
 
 - Frontend: React + TypeScript
 - Styling: Tailwind CSS v4
-- Animation: Framer Motion (fade-in questionnaire, stage transitions)
-- Visual canvas: React Flow or custom canvas layer
-- File system: Node.js file writer service or local IndexedDB for browser-native storage
-- AI layer: OpenAI API (primary), with model routing planned for later
-- State machine: XState or custom explicit state enum
-- Storage: Local file export + optional cloud sync in later version
-- Hosting: Vercel (frontend), Node backend for file writes if needed
+- Animation: Framer Motion
+- Visual canvas: React Flow
+- File writer: Node.js service (or IndexedDB for browser-native)
+- AI layer: OpenAI API (primary)
+- State machine: XState
+- Storage: Local file export + optional cloud sync (later)
+- Hosting: Vercel
 
 ---
 
 ## ADVANCED PROMPT ENGINEERING CONSTRAINTS
 
-The following must be applied throughout the build:
-
-1. **Schema-first outputs**: Every AI response must produce a typed structured object, not free-form text. Field names and field descriptions drive model adherence.
-2. **Router-first classification**: Classify before generating. Route to the correct prompt family before any elaboration.
-3. **Dynamic clarification minimization**: Ask only the highest-information-gap questions. Stop early when confidence is high.
-4. **Critique as first-class workflow**: Critique templates are custom-generated for every pass context. They are never generic.
-5. **Explicit halt conditions**: The system must always know which state it is in. It must never silently transition.
-6. **Versioned templates**: All prompt family templates are versioned as `template_v1.md`, `template_v2.md`, etc.
-7. **No agent loops without stop conditions**: Any future multi-agent feature must have explicit termination criteria before launch.
-8. **Few-shot examples in every template**: Each prompt family template includes one strong example, one weak/incorrect example, one edge-case example.
+1. **Schema-first outputs** — every AI response produces a typed structured object.
+2. **Router-first classification** — classify before generating.
+3. **Dynamic clarification minimization** — ask only highest-information-gap questions.
+4. **Critique as first-class workflow** — custom-generated per pass, never generic.
+5. **Explicit halt conditions** — state machine enforced, no silent transitions.
+6. **Versioned templates** — `template_v1.md` → `template_v2.md`.
+7. **No agent loops without stop conditions**.
+8. **Few-shot examples in every template** — strong, weak, edge-case.
 
 ---
 
 ## WHAT TO BUILD FIRST
 
-MVP in this order:
-1. File system architecture + folder naming conventions (scaffold only, no content yet).
-2. Intake form UI (raw input + optional attachment area).
-3. Classification engine (route input to prompt family).
-4. Fade-in questionnaire component (multi-select, other input, fade logic).
+1. File system scaffold.
+2. Intake form UI.
+3. Classification engine.
+4. Fade-in questionnaire component.
 5. Canonical prompt output panel.
 6. Critique template generation and append logic.
 7. Acceptance handshake state machine.
-8. File save and append logic (conversations, critiques, clarifications, templates).
+8. File save + 20-second auto-append logic (`XXXX_conversation.md` + individual `turns/`).
 9. Next-step prompt display.
 10. Session log writer.
-11. Prompt library folder and template registry.
-12. Visual canvas (secondary — after core workflow is solid).
+11. Prompt library registry.
+12. Visual canvas (secondary).
 
 ---
 
@@ -298,22 +345,21 @@ MVP in this order:
 Respond to this spec using the Prompt Refinery interaction model:
 
 **Section 1: Refined Understanding**
-Tell me what you understand this product to be. Be precise. Include: what it does, why it is different, and any tensions or ambiguities you see.
+Tell me what you understand this product to be. Be precise. Include what it does, why it is different, and any tensions or ambiguities you see.
 
 **Section 2: Open Questions**
-List any questions you need answered before you can produce the Canonical Execution Prompt. Present them in the fade-in questionnaire format (numbered, with multiple-choice options and an Other field).
+List any questions you need answered. Present them in fade-in questionnaire format: numbered, with multiple-choice options and an Other field.
 
 **Section 3: Canonical Execution Prompt (current best attempt)**
-Write the best current official execution prompt I should paste back to you to begin. Update this each pass based on answers and critiques.
+Write the best current official execution prompt I should paste back to you to begin.
 
 **Section 4: Critique Template (custom for this pass)**
-Generate a structured critique template specific to this response. Append it at the bottom.
+Generate a structured critique template specific to this response context.
 
 **Section 5: Suggested Next Prompt**
-Give the optional directional next prompt if I want to go deeper before accepting.
+Optional directional next prompt to go deeper before accepting.
 
 ---
 
-> When I paste Section 3 back to you verbatim, and you have no open questions, and I provide no critiques,
-> that is the signal that we have completed the preliminary refinement stage.
-> Do not start building until that handshake is complete.
+> When I paste Section 3 back to you verbatim, you have no open questions, and I provide no critiques —
+> that is the Acceptance Handshake. Do not start building until it is complete.
