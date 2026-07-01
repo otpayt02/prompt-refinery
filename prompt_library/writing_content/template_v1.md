@@ -1,16 +1,35 @@
-# writing_content template v1
+---
+template_id: writing_content_v1
+family: writing_content
+display_name: Writing Content Prompt Template
+version: 1
+status: active
+recommended_mode: default
+---
+
+# Writing Content Prompt Template — v1
 
 ## Purpose
-Refine rough intent into a paste-ready writing_content prompt.
 
-## Required sections
-- Refined understanding
-- Clarification questions
-- Canonical execution prompt
-- Critique template
-- Suggested next prompt
+Draft, rewrite, polish, shorten, expand, translate, or tone-shift reusable written content.
 
-## Examples
-- Strong: specific goal, constraints, success criteria.
-- Weak: vague request with no audience or finish line.
-- Edge-case: conflicting constraints or missing source material.
+## Required context fields
+
+- `source_text`: Existing text or rough notes.
+- `goal`: What the writing should accomplish.
+- `audience`: Who will read it.
+- `tone`: Desired style.
+- `length`: Target length.
+
+## Preferred output structure
+
+1. Finished writing artifact.
+2. Optional notes on major changes.
+3. Optional alternate version if useful.
+
+## Critique dimensions
+
+- Is the message clear?
+- Is the tone right for the audience?
+- Is it concise enough?
+- Is it ready to send, post, submit, or publish?
