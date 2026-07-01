@@ -1,0 +1,424 @@
+[1.0] Prompt: Feed Job Posting, Return Project Solution Prototype
+Good. Now follow the command system exactly.
+
+I am going to paste an Upwork job posting.
+
+Your job is to do 4 things in this exact order:
+
+1. Reverse-engineer the client's real problem.
+2. Give me the fastest realistic MVP/prototype I can build to demonstrate that I can solve it.
+3. Give me a step-by-step execution plan for solving their project before they even hire me.
+4. Then give me 10 additional project summaries that would help me build adjacent skills relevant to this exact role.
+
+Core objective:
+I want to use the pasted Upwork job posting to:
+- understand exactly what the client needs,
+- build a prototype preview of their solution,
+- learn the practical skills required by the role,
+- and position myself to apply with proof instead of just promises.
+
+Assumptions:
+- I want the fastest path to a working prototype.
+- I care about freelance-demand skills, not theory.
+- Assume I have Replit Core.
+- Prefer free or low-cost tools first.
+- Prefer tools, stacks, and workflows that are reusable for future client work.
+- I want outputs that are ready to use today.
+- I do not want vague advice.
+- I want implementation-specific steps.
+- When recommending tools, show tradeoffs.
+- If the posting is underspecified, infer the most likely real-world requirements and state your assumptions clearly.
+- Optimize for “what can I build quickly that still impresses the client?”
+
+What I will paste:
+- The full Upwork job post
+- Sometimes notes from the client
+- Sometimes attached files later
+
+Your required response structure:
+
+SECTION 1 — CLIENT PROBLEM DECODE
+Analyze the posting and tell me:
+- What the client explicitly asked for
+- What they probably actually need underneath that request
+- What success looks like from the client’s point of view
+- What hidden constraints are likely involved
+- What risks or ambiguities in the posting could affect scope
+- What level of polish is probably expected: rough prototype, MVP, internal tool, production-ready system, or enterprise-grade workflow
+
+SECTION 2 — FASTEST PROTOTYPE TO BUILD
+Give me the single best prototype or MVP I should build before applying.
+This should be:
+- fast enough to start today,
+- strong enough to demonstrate competence,
+- close enough to the client’s problem to feel immediately relevant,
+- and reusable as a portfolio asset later.
+
+For this section include:
+- Prototype name
+- One-sentence value proposition
+- What exactly the prototype should do
+- What I should leave out to save time
+- What makes this prototype persuasive to the client
+- What a “good enough to send” version looks like
+
+SECTION 3 — BUILD PLAN
+Give me the full implementation plan.
+
+Break it into:
+1. Inputs
+2. Outputs
+3. Core workflow
+4. User flow
+5. Data flow
+6. Tools/platforms
+7. File structure
+8. MVP feature list
+9. Stretch features
+10. Delivery format
+
+Then give:
+- Step-by-step build sequence in the exact order I should do it
+- Which parts should be built manually first before automating
+- Which parts can be mocked or faked in the prototype
+- Which parts need to actually work
+- What I can screenshot or record for the proposal
+- What I can turn into a Loom/demo/video preview
+- The minimum version that still proves capability
+
+SECTION 4 — TOOLING DECISIONS
+Recommend the best stack for this project.
+
+For each tool recommendation include:
+- Why it fits this posting
+- Cost
+- Difficulty
+- Speed to first result
+- Freelancer demand relevance
+- Reusability in future Upwork jobs
+- Tradeoffs vs alternatives
+
+Prefer options like:
+- Replit
+- Python
+- JavaScript
+- FastAPI / Flask
+- simple HTML/CSS/JS
+- SQLite / Supabase
+- Google Sheets
+- Airtable
+- Zapier / Make / n8n
+- OCR tools
+- scraping tools
+- browser automation
+- APIs
+- lightweight AI integrations
+
+But only choose what fits the actual posting.
+
+SECTION 5 — NECESSARY SKILLS FROM THIS JOB
+Extract the real skill stack I would gain by doing this project.
+
+Organize into:
+- Technical skills
+- Product/problem-solving skills
+- Client-service skills
+- Debugging/testing skills
+- Delivery/presentation skills
+- Skills that are especially valuable on Upwork
+
+For each skill include:
+- Why it matters in this posting
+- Whether I need beginner, intermediate, or working-client level competency
+- The fastest way to learn just enough to execute this project well
+
+SECTION 6 — PROJECT EXECUTION CHECKLIST
+Give me a checklist I can follow while building.
+
+Use this format:
+- [ ] Task
+- [ ] Task
+- [ ] Task
+
+Group the checklist into:
+- Setup
+- Prototype build
+- Testing
+- Demo assets
+- Proposal preparation
+- Delivery readiness
+
+SECTION 7 — WHAT TO SEND THE CLIENT
+Tell me what I can realistically send with my proposal before being hired.
+
+Include:
+- A short explanation of the prototype
+- What proof artifacts to attach
+- What screenshots to include
+- What short video/demo to record
+- What not to promise yet
+- How to frame the prototype so it sounds helpful, not presumptuous
+
+SECTION 8 — 10 ADJACENT SKILL-BUILDING PROJECTS
+After solving the client’s problem first, give me 10 additional project summaries that are highly relevant to this role.
+
+For each of the 10 projects include:
+- Project name
+- One-sentence summary
+- Which role-relevant skill it builds
+- Why it is adjacent to this posting
+- Difficulty level
+- Estimated build time
+- Portfolio value
+- Whether it is better as a script, app, automation, dashboard, bot, scraper, API integration, or internal tool
+
+Important:
+- These 10 projects should not replace the client solution.
+- They come after the client solution.
+- They should expand my skill stack in the same niche as the posting.
+
+SECTION 9 — OUTPUTS READY TO USE
+End by giving me:
+1. A one-paragraph project brief I can save
+2. A build-today version of the plan
+3. A 24-hour version of the plan
+4. A 3-day stronger version of the plan
+5. The exact first step I should do immediately after reading your response
+
+Rules for your response:
+- Do not be generic.
+- Do not give me broad career advice.
+- Do not repeat the whole job post back to me.
+- Focus on execution.
+- Make reasonable assumptions where necessary.
+- Optimize for speed to proof.
+- Prioritize something I can actually build and show.
+- Prefer practical deliverables over theoretical completeness.
+- When in doubt, choose the version that gets me a working demo fastest.
+- Write like a technical project strategist helping me win the job fast.
+
+Wait for the pasted posting, then produce the full output.
+
+[2.0] Prompt: Joint Prototype & Proposal Submission
+Good. Now follow the command system exactly.
+
+Context:
+I already analyzed an Upwork job posting and built, partially built, or fully planned a prototype/MVP that addresses the client’s problem.
+I now need a tailored proposal I can actually submit on Upwork.
+
+Your job is to write a high-conviction, client-specific proposal that:
+- sounds human,
+- is grounded in the actual posting,
+- references the prototype or preview I made,
+- positions me as helpful and execution-focused,
+- and increases the chance that the client replies.
+
+Important:
+I do NOT want a generic Upwork cover letter.
+I want a proposal that feels like:
+“I understood your problem, I already thought through the solution, and I made something relevant to prove I can help.”
+
+I will paste:
+- the Upwork job posting
+- my prototype summary, build notes, screenshots, demo notes, or feature list
+- optionally my background or relevant skills
+
+Your required goals:
+1. Extract the client’s likely priorities.
+2. Write the strongest proposal for getting a reply.
+3. Mention my prototype in a persuasive but non-pushy way.
+4. Make me sound capable, practical, and easy to work with.
+5. Avoid overclaiming.
+6. Help me sound like I reduce risk for the client.
+
+Your required response structure:
+
+SECTION 1 — CLIENT PRIORITY MAP
+Before writing the proposal, identify:
+- the top 3 likely things the client cares about most
+- the top 3 fears or objections they may have
+- what kind of freelancer tone is most likely to work here
+- whether I should sound technical, businesslike, warm, direct, consultative, or fast-moving
+
+SECTION 2 — PROPOSAL STRATEGY
+Tell me the messaging strategy before writing the proposal:
+- What should the hook be?
+- What should I say about the prototype?
+- What should I avoid saying?
+- How much technical detail should I include?
+- How should I frame speed, confidence, and scope?
+- What should make the client feel safer hiring me?
+
+SECTION 3 — MAIN PROPOSAL
+Write the full Upwork proposal.
+
+Requirements:
+- Strong opening line tailored to the posting
+- Show understanding of their real problem
+- Mention relevant implementation thinking
+- Reference my prototype/MVP/preview naturally
+- Explain how that preview connects to their actual need
+- Make it clear I can continue from prototype to finished solution
+- Keep it concise enough for Upwork
+- Avoid fake corporate language
+- Avoid exaggerated claims
+- Avoid sounding desperate
+- Avoid sounding copy-pasted
+
+SECTION 4 — ALT VERSIONS
+Give me:
+1. A shorter version
+2. A slightly more technical version
+3. A warmer/more conversational version
+
+SECTION 5 — ATTACHMENT MESSAGE
+Write the short message I should include when I attach:
+- screenshots,
+- a Loom/demo,
+- a GitHub link,
+- a Replit link,
+- or a file showing the prototype
+
+This should explain the attachment clearly without overwhelming the client.
+
+SECTION 6 — RESPONSE IF THEY REPLY
+Write:
+- a short reply if they say “Looks interesting, can you explain more?”
+- a short reply if they ask “Did you already build this?”
+- a short reply if they ask timeline/cost
+- a short reply if they ask for a call
+- a short reply if they challenge whether the prototype matches their exact use case
+
+SECTION 7 — CUSTOMIZATION NOTES
+After the proposal, tell me:
+- which parts I should customize manually before sending
+- which parts depend on whether the prototype is complete or partial
+- what evidence would strengthen the proposal most
+- what sentence is the strongest one in the draft and why
+
+Rules for your response:
+- Do not give me a generic template only.
+- Actually write the proposal.
+- Ground it in the job posting and my prototype notes.
+- Make it sound like a real person wrote it.
+- Optimize for response rate, not fluff.
+- Keep the tone confident but believable.
+- Use specifics that make the client think I already understand the work.
+- Treat the prototype as proof, not as a gimmick.
+- If the prototype is incomplete, frame it honestly and strategically.
+- Make me sound useful immediately.
+
+Wait for the posting and my project notes, then produce the full output.
+
+[3.0] Prompt: 10 Relevant Skill Development Projects
+
+Good. Now follow the command system exactly.
+
+Context:
+I already used an Upwork job posting to:
+1. identify the client’s problem,
+2. plan or build a relevant prototype,
+3. and create a tailored proposal.
+
+Now I want 10 additional projects that will help me build a stronger portfolio and skill stack specifically for this type of role.
+
+Goal:
+Generate 10 project outlines that are tightly connected to the same freelance niche as the original posting.
+
+These projects should help me:
+- gain relevant technical ability,
+- create portfolio proof,
+- become more credible for similar jobs,
+- increase my future Upwork win rate,
+- and build reusable components or workflows I can use again for clients.
+
+Assumptions:
+- I want practical, sellable, freelance-relevant projects.
+- I prefer projects that teach by building.
+- I want projects that can become case studies, demos, reusable templates, or client offers.
+- Assume I have Replit Core.
+- Prefer free or low-cost tools first.
+- Prefer projects that can be scoped into MVPs.
+- Prefer future client utility over academic completeness.
+
+I will paste:
+- the original Upwork posting
+- the project solution summary
+- optionally the proposal or prototype notes
+
+Your task:
+Based on that context, give me 10 adjacent projects that are clearly relevant to the same type of work.
+
+Your required response structure:
+
+SECTION 1 — NICHE DECOMPOSITION
+First, identify:
+- the underlying freelance niche of the posting
+- the sub-skills that show up repeatedly in jobs like this
+- the tools/platforms most worth learning in this niche
+- the types of deliverables clients usually pay for here
+- what separates beginners from freelancers who reliably get hired
+
+SECTION 2 — 10 PROJECTS
+Give me exactly 10 project outlines.
+
+For each project use this exact structure:
+
+PROJECT [#]
+- Name
+- Core problem it solves
+- Why it is relevant to the original posting
+- Main skills learned
+- Tools/stack
+- Difficulty: beginner / beginner-intermediate / intermediate
+- Estimated MVP build time
+- Best portfolio format: script / web app / dashboard / automation / bot / scraper / API tool / internal tool / browser tool / workflow system
+- What the MVP should do
+- What I can leave out at first
+- What would make it impressive to clients
+- What proof artifact I should create
+- How reusable this is for future Upwork jobs
+- Whether this is best for speed, learning, credibility, or repeatable selling
+
+SECTION 3 — RANKING
+Rank the 10 projects by:
+1. fastest to build
+2. best for client credibility
+3. best for learning the niche deeply
+4. best reusable asset for future proposals
+5. best likely Upwork portfolio piece
+
+SECTION 4 — SKILL COVERAGE MAP
+Create a map showing:
+- which skills are covered well by the 10 projects
+- which skill gaps would still remain
+- which 3 projects I should prioritize first for the strongest compounding effect
+
+SECTION 5 — EXECUTION ORDER
+Give me:
+- the best order to build these projects in
+- why that order makes sense
+- which ones can share code, UI, or workflow pieces
+- which ones can become a packaged service offer
+
+SECTION 6 — READY-TO-BUILD OUTPUT
+End with:
+1. The single best project to start next
+2. A one-paragraph reason why
+3. The exact first build step
+4. A 1-day MVP version
+5. A stronger 3-day version
+6. A sentence I could use on Upwork to reference that project later
+
+Rules for your response:
+- Do not give me random project ideas.
+- Keep every project tightly linked to the original job niche.
+- Favor things that build real freelance leverage.
+- Favor projects that can become demos and reusable templates.
+- Avoid ideas that are impressive but unlikely to help me get hired.
+- Prefer practical projects over theoretical exercises.
+- Make the projects distinct from each other.
+- Show me how the projects connect to actual client demand.
+- Optimize for a portfolio that helps me win similar jobs.
+
+Wait for the posting and prior project context, then produce the full output.
