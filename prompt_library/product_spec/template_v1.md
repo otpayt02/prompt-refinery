@@ -36,3 +36,15 @@ Define a product, its MVP boundary, user workflow, screen map, technical archite
 - Are user goals explicit?
 - Is build sequence logically ordered?
 - Are acceptance criteria measurable?
+
+## Strong example
+
+> Define the MVP for a prompt-engineering workspace. Include the product purpose, first user, v1 scope, core workflow, screen map, and build sequence.
+
+## Weak example
+
+> Make me a spec for a prompt tool.
+
+## Edge-case example
+
+> Define the MVP when the requested scope is too large for one release. Name what must be cut and why.
