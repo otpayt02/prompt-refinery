@@ -1,4 +1,4 @@
 # Session 0000
 
-Started: 2026-06-30T23:46:14.046Z
-Provider: local deterministic, Gemini optional via GEMINI_API_KEY.
+Started: 2026-07-02T06:13:26.930Z
+Provider: local deterministic, Featherless optional via FEATHERLESS_API_KEY.
