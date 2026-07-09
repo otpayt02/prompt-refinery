@@ -1,7 +1,7 @@
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://api.featherless.ai/v1",
+    base_url="NVIDIA_API_KEY",
     api_key="rc_5c6f83394786c8e5181afabeb6cecb538981b8121bf8c6cc326edb6c4133c3a1",
 )
 

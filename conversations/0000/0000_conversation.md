@@ -14503,3 +14503,162 @@ Refine the next viable canonical prompt now. Update the final prompt based on wh
 
 # Suggested Next Prompt
 Copy the refined response, or use critique mode to make it sharper for the recipient.
+---
+## [0000.0.0] USER - 2026-07-03T22:09:30.399Z
+<!-- state: intake_received -->
+I want to start a portfolio automation project that helps me use AI better.
+---
+## [0000.0.5] SYSTEM - 2026-07-03T22:09:30.470Z
+<!-- state: clarification_needed -->
+<!-- prompt_family: product_spec -->
+<!-- pass: 1 -->
+# Refined Understanding
+This request should use the custom "Create a portfolio gener" mode: Custom mode generated from: Create a portfolio generation mode that returns a project idea, MVP scope, fixed context, prompt parameters, and the next action.. The output should respect the mode's fixed context and desired outcome before applying the normal prompt family classification.
+
+# Canonical Execution Prompt
+You are a Matter-of-fact specialist for the selected custom workflow.
+Mode: Create a portfolio gener
+Custom mode generated from: Create a portfolio generation mode that returns a project idea, MVP scope, fixed context, prompt parameters, and the next action.
+
+Fixed context:
+Use the user's current input plus this saved mode as the operating frame.
+
+Desired outcome:
+Return the artifact this mode is designed to produce with a clear next action.
+
+Current input:
+I want to start a portfolio automation project that helps me use AI better.
+
+Mode instructions:
+Create a portfolio generation mode that returns a project idea, MVP scope, fixed context, prompt parameters, and the next action.
+
+Return:
+1. Refined understanding.
+2. The main artifact this custom mode is meant to produce.
+3. Constraints, assumptions, and missing information.
+4. The next action and next prompt to continue the workflow.
+
+# Expected Response Blueprint
+## Expected AI Response Blueprint
+
+### 1. Direct Goal Summary
+Restate the goal in one or two sentences: I want to start a portfolio automation project that helps me use AI better.
+
+### 2. Fastest Path
+1. Restate the exact end goal and define what finished means.
+2. List the assumptions that could change the answer.
+3. Ask only the missing questions that would materially improve the result.
+4. Produce the fastest useful path first, then note what can be improved later.
+5. End with the next concrete action the user should take.
+6. Define the first useful user, MVP boundary, core screens, data model, and demo path.
+7. Break the build into implementation phases ordered by dependency.
+
+### 3. Main Output
+Produce the product spec artifact, answer, plan, fix, draft, or spec that moves the work forward immediately.
+
+### 4. Verification
+List exactly how the user or agent can tell whether the answer worked.
+
+### 5. Follow-up Prompt Menu
+1. If this is for a portfolio, turn the plan into a reviewer-visible demo story.
+2. If this could become a business, identify the first customer pain and the smallest test.
+3. If I need the fastest possible version, reduce this to the smallest complete path and tell me what to skip.
+4. If I have more time, expand this into a higher-quality version with polish and verification steps.
+5. If important context is missing, ask only the few questions that would change the final answer.
+6. If this starts costing too many tokens or API calls, rewrite the plan to use fewer calls and smaller prompts.
+
+### 6. Expand If Needed
+1. Expand the Product spec reasoning: explain why each major prompt instruction exists and how it helps finish the goal faster.
+2. Expand the risk section: list what could go wrong, how to notice it, and what to do next.
+3. Expand the implementation details: turn each major step into smaller commands, files, or decisions.
+4. Expand the prompt strategy: explain which prompt-engineering principles were used and why they matter here.
+5. Expand the alternatives: show a faster option, a higher-quality option, and a lower-cost option.
+
+# Defined Steps
+1. Restate the exact end goal and define what finished means.
+2. List the assumptions that could change the answer.
+3. Ask only the missing questions that would materially improve the result.
+4. Produce the fastest useful path first, then note what can be improved later.
+5. End with the next concrete action the user should take.
+6. Define the first useful user, MVP boundary, core screens, data model, and demo path.
+7. Break the build into implementation phases ordered by dependency.
+
+# Scenario Follow-up Prompts
+1. If this is for a portfolio, turn the plan into a reviewer-visible demo story.
+2. If this could become a business, identify the first customer pain and the smallest test.
+3. If I need the fastest possible version, reduce this to the smallest complete path and tell me what to skip.
+4. If I have more time, expand this into a higher-quality version with polish and verification steps.
+5. If important context is missing, ask only the few questions that would change the final answer.
+6. If this starts costing too many tokens or API calls, rewrite the plan to use fewer calls and smaller prompts.
+
+# Expansion Prompts
+1. Expand the Product spec reasoning: explain why each major prompt instruction exists and how it helps finish the goal faster.
+2. Expand the risk section: list what could go wrong, how to notice it, and what to do next.
+3. Expand the implementation details: turn each major step into smaller commands, files, or decisions.
+4. Expand the prompt strategy: explain which prompt-engineering principles were used and why they matter here.
+5. Expand the alternatives: show a faster option, a higher-quality option, and a lower-cost option.
+
+# Next Action
+Choose the portfolio story this project should prove to a reviewer.
+
+# Why This Action
+This option removes the highest-impact ambiguity currently visible in the prompt, which reduces back-and-forth before execution.
+
+# Action After That
+Turn the MVP into screens, data model, build phases, and demo criteria.
+
+# Next Prompt To Give Back
+I finished the next action for this product spec prompt refinement pass.
+
+Original goal:
+I want to start a portfolio automation project that helps me use AI better.
+
+Completed next action: Choose the portfolio story this project should prove to a reviewer.
+Why it mattered: This option removes the highest-impact ambiguity currently visible in the prompt, which reduces back-and-forth before execution.
+Action after this: Turn the MVP into screens, data model, build phases, and demo criteria.
+
+Other viable next-action options:
+1. Choose the portfolio story this project should prove to a reviewer.
+2. Define the demo moment that will make the project feel complete.
+3. Name the repeated manual task, trigger, input, output, and failure case.
+4. Map the automation as one before/after workflow with a measurable time saved.
+5. Lock the first useful user and MVP proof.
+
+Known completed clarification count: 0
+
+Refine the next viable canonical prompt now. Update the final prompt based on what changed, explain why the new prompt is better, and return:
+1. The revised final prompt.
+2. The next action I should take.
+3. Why that action is next.
+4. The action after that.
+5. The next prompt I should give back after I finish that action.
+
+# Critique Template
+## Critique Template
+
+### Category Check: Product spec
+- Is product_spec the right category for this request?
+- If not, which category would produce a better prompt?
+
+### Product Usefulness
+- Does the prompt define who this is useful for first?
+- Does the MVP prove a real behavior, not just a nice interface?
+
+### Portfolio Value
+- Would the resulting build show skill clearly to a reviewer?
+- Is there a demo path and a short project story?
+
+### This Prompt's Context
+- Does the prompt preserve this goal: "I want to start a portfolio automation project that helps me use AI better."?
+- What missing answer would most improve the prompt?
+
+### Cost and Usefulness
+- Does the prompt avoid wasting tokens on unnecessary breadth?
+- Does it ask for the most useful next artifact?
+
+### Acceptance
+- Can this prompt be accepted as the current source of truth?
+- If not, paste exact edits.
+
+# Suggested Next Prompt
+Answer the product spec clarification card, then regenerate the final output.
