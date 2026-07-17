@@ -1,65 +1,124 @@
-# Prompt Refinery
+# 🧪 Prompt Refinery
 
-> A self-referential prompt-engineering workspace — built using the same interaction pattern it teaches.
+> An AI prompt-engineering workspace that converts rough intent into structured, staged prompt pipelines with clarification loops, critique templates, and visual flow mapping.
 
----
-
-## What it is
-
-Prompt Refinery converts rough user intent, messy notes, draft prompts, and optional attachments into a structured, staged prompt pipeline — through input classification, targeted clarification questions, critique loops, and a formal acceptance handshake.
-
-The mind map is a secondary visualization of refinement state, question trees, and prompt lineage.
+**GitHub:** https://github.com/otpayt02/prompt-refinery  
+**Live UI (local):** [http://127.0.0.1:5173/](http://127.0.0.1:5173/) ← open after running `npm run dev`
 
 ---
 
-## How to start building with Codex
+## 🚀 Quick Start (PowerShell)
 
-1. Open `CODEX_PROMPT.md`.
-2. Copy the entire contents.
-3. Paste into Codex as your first message.
-4. Codex will return:
-   - A Refined Understanding of the product.
-   - Any open questions (fade-in questionnaire format).
-   - A Canonical Execution Prompt to paste back.
-   - A Critique Template.
-   - A Suggested Next Prompt.
-5. Answer questions, give critiques, or paste the Canonical Execution Prompt back verbatim.
-6. When all conditions are met (no questions, no critiques, verbatim paste), Codex begins building.
-
----
-
-## Core interaction loop
-
-```
-User pastes rough input
-  → System classifies prompt family
-  → System asks clarification questions (fade-in questionnaire)
-  → System returns Canonical Execution Prompt + Critique Template
-  → User answers, critiques, or pastes prompt back verbatim
-  → Loop repeats until Acceptance Handshake
-  → Execution Pipeline begins
+```powershell
+cd C:\Projects\prompt-refinery   # or wherever you cloned it
+npm install                       # first time only
+$env:GEMINI_API_KEY = "your-key" # optional — free local engine works without it
+npm run dev
 ```
 
----
-
-## File structure
-
-See `SPEC.md` for full file organization rules and conversation numbering.
-
----
-
-## Prompt families
-
-`analysis` · `product_spec` · `research_brief` · `execution_plan` · `writing_content` · `outreach_persuasion` · `debugging_troubleshooting` · `critique_loop` · `circumstantial`
+| Service | URL | Purpose |
+|---------|-----|---------|
+| **Web UI** | http://127.0.0.1:5173/ | Main prompt-engineering workspace |
+| **File Writer API** | http://127.0.0.1:8787/ | Writes artifacts to disk |
 
 ---
 
-## Stack
+## 🖥️ What the UI Does
 
-React · TypeScript · Tailwind CSS v4 · Framer Motion · React Flow · XState · OpenAI API · Vercel
+Prompt Refinery is a self-referential prompt-engineering workspace. You give it rough input, and it refines it through structured clarification and critique loops until you have a production-ready prompt pipeline.
+
+### Stages
+1. **Intake** — paste raw notes, rough prompts, or MCP context
+2. **Classification** — auto-classifies input into a Prompt Family
+3. **Clarification Loop** — fade-in questionnaire (one question at a time, multi-select chips)
+4. **Critique Loop** — returns Canonical Execution Prompt + Critique Template each pass
+5. **Acceptance Handshake** — paste the Canonical Prompt back verbatim → pipeline unlocks
+6. **Execution Pipeline** — full staged prompt sequence generated for your goal
+
+### UI Layout
+- **Left** — input area + conversation history
+- **Center** — current refined prompt output
+- **Right** — live file explorer showing saved artifacts
+- **Bottom** — critique template (visible until handshake)
+- **Top-right chip** — suggested next prompt
 
 ---
 
-## Status
+## 📁 File System Architecture
 
-🟡 Spec locked. Awaiting Codex Acceptance Handshake to begin build.
+All artifacts are written by `server/fileWriter.cjs` running at port 8787:
+
+```
+prompt-refinery/
+├── conversations/          ← running logs (auto-append every 20s)
+│   └── 0000/
+│       ├── 0000_conversation.md
+│       ├── turns/
+│       ├── clarifications/
+│       ├── critiques/
+│       ├── next_step_prompts/
+│       └── canonical_prompts/
+├── prompt_library/         ← shared global templates by family
+├── critique_templates/
+├── clarification_templates/
+├── session_log/
+├── saved_roles/
+└── artifacts/
+```
+
+Conversation logs force-flush on browser close and auto-append every **20 seconds**.
+
+---
+
+## 🔑 Environment Setup
+
+```powershell
+# Copy example and fill in your key
+Copy-Item .env.example .env
+# Then edit .env and add:
+# GEMINI_API_KEY=AIza...
+```
+
+The app works fully **free/offline** using the local deterministic engine. The Gemini key unlocks AI-powered classification and response generation.
+
+---
+
+## 🧩 Prompt Family Types
+
+| Family | Purpose |
+|--------|---------|
+| `analysis` | Break down existing material |
+| `product_spec` | Define product, MVP, architecture |
+| `research_brief` | Structured research questions |
+| `execution_plan` | Step-by-step build/action sequence |
+| `writing_content` | Drafting, editing, tone |
+| `outreach_persuasion` | Pitch, message, proposal |
+| `debugging_troubleshooting` | Isolate and resolve failures |
+| `critique_loop` | Evaluate and improve existing work |
+| `circumstantial` | Situation-specific prompts |
+
+---
+
+## 🛠️ Scripts Reference
+
+```powershell
+npm run dev          # Start web UI + file writer API (recommended)
+npm run dev:web      # Vite UI only (port 5173)
+npm run dev:api      # File writer API only (port 8787)
+npm run build        # Production build
+npm run preview      # Preview production build
+npm run typecheck    # TypeScript check only
+```
+
+---
+
+## 📖 Other Docs
+
+- [`CODEX_PROMPT.md`](./CODEX_PROMPT.md) — Bootstrap prompt for Codex to build this project
+- [`SPEC.md`](./SPEC.md) — Full product spec
+- [`RUNNING.md`](./RUNNING.md) — Minimal quick-run reference
+- [`AGENTS.md`](./AGENTS.md) — Agent behavior rules
+
+---
+
+👉 **[Open UI: http://127.0.0.1:5173/](http://127.0.0.1:5173/)** *(run `npm run dev` first)*
